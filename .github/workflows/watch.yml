@@ -1,0 +1,27 @@
+name: watch
+on:
+  schedule:
+    - cron: "0 1 * * *"     # 8h00 giờ VN
+    - cron: "30 6 * * *"    # 13h30 giờ VN
+    - cron: "0 12 * * *"    # 19h00 giờ VN
+  workflow_dispatch:         # cho phép bấm chạy tay
+
+concurrency:
+  group: watch
+  cancel-in-progress: true   # lượt mới thay lượt cũ, không chạy trùng
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - run: python -u watch_github.py
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT: ${{ secrets.TG_CHAT }}
+          PROXY_URL: ${{ secrets.PROXY_URL }}
