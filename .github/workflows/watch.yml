@@ -25,3 +25,5 @@ jobs:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT: ${{ secrets.TG_CHAT }}
           PROXY_URL: ${{ secrets.PROXY_URL }}
+          START_H: "0"
+          END_H: "24"
