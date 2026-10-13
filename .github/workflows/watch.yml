@@ -1,9 +1,9 @@
 name: watch
 on:
   schedule:
-    - cron: "0 1 * * *"     # 8h00 giờ VN
-    - cron: "30 6 * * *"    # 13h30 giờ VN
-    - cron: "0 12 * * *"    # 19h00 giờ VN
+    - cron: "0 1 * * *"     # 8h00 VN  -> chạy 8h-12h
+    - cron: "0 6 * * *"     # 13h00 VN -> chạy 13h-18h
+    - cron: "0 11 * * *"    # 18h00 VN -> chạy 18h-22h
   workflow_dispatch:         # cho phép bấm chạy tay
 
 concurrency:
@@ -25,5 +25,5 @@ jobs:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT: ${{ secrets.TG_CHAT }}
           PROXY_URL: ${{ secrets.PROXY_URL }}
-          START_H: "0"
-          END_H: "24"
+          START_H: ${{ github.event.schedule == '0 6 * * *' && '13' || github.event.schedule == '0 11 * * *' && '18' || '8' }}
+          END_H: ${{ github.event.schedule == '0 1 * * *' && '12' || github.event.schedule == '0 6 * * *' && '18' || '22' }}
